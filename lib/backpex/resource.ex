@@ -186,8 +186,8 @@ defmodule Backpex.Resource do
 
         direction =
           case direction do
-            :desc -> :desc_nulls_last
-            :asc -> :asc_nulls_first
+            :desc -> :desc
+            :asc -> :asc
           end
 
         field =
@@ -294,7 +294,7 @@ defmodule Backpex.Resource do
     id_type = schema.__schema__(:type, :id)
     associations = associations(fields, schema)
 
-    from(item in schema, as: ^schema_name, distinct: item.id)
+    from(item in schema, as: ^schema_name)
     |> item_query.()
     |> maybe_join(associations)
     |> maybe_preload(associations, fields)
