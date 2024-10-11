@@ -184,11 +184,7 @@ defmodule Backpex.Resource do
       {:order, %{by: by, direction: direction, schema: schema, field_name: field_name}}, query ->
         schema_name = get_custom_alias(fields, field_name, name_by_schema(schema))
 
-        direction =
-          case direction do
-            :desc -> :desc
-            :asc -> :asc
-          end
+        direction = adapter().sort_direction(direction)
 
         field =
           Enum.find(fields, fn
@@ -522,4 +518,6 @@ defmodule Backpex.Resource do
         schema.__schema__(:association, name) |> Map.from_struct()
     end)
   end
+
+  defp adapter, do: Application.get_env(:backpex, :adapter, Backpex.Adapters.Postgres)
 end

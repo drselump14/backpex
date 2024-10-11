@@ -141,12 +141,9 @@ defmodule Backpex.Field do
       def assign_uploads(_field, socket), do: socket
 
       @impl Backpex.Field
-      def search_condition(schema_name, field_name, search_string) do
-        dynamic(
-          [{^schema_name, schema_name}],
-          ilike(schema_name |> field(^field_name), ^search_string)
-        )
-      end
+      def search_condition(schema_name, field_name, search_string), do: adapter().search_condition(schema_name, field_name, search_string)
+
+      defp adapter, do: Application.get_env(:backpex, :adapter, Backpex.Adapters.Postgres)
     end
   end
 
